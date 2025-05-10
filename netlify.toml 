@@ -1,12 +1,19 @@
 [build]
-  publish = "dist"
-  functions = "functions"
+  # 함수 의존성(예: node-fetch) 설치를 위해 빌드 명령이 필요할 수 있습니다.
+  # 프로젝트 루트의 package.json에 함수 의존성이 명시되어 있다면 npm install을 사용합니다.
+  command = "npm install"
+  publish = "dist"          # 배포할 정적 파일이 있는 폴더
+  functions = "functions"     # Netlify Functions 소스 코드 폴더
 
-[dev] # 이 부분은 로컬 개발용이지만, 있어도 배포에 문제는 없습니다.
+# 로컬 개발 환경 설정 (netlify dev 시 사용)
+[dev]
   publish = "dist"
   port = 8888
+  # command = "npm run start" # 프론트엔드 빌드/개발 서버 명령 (우리 경우는 필요 없음)
 
+# API 프록시를 위한 리다이렉션 규칙
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+  from = "/api/*"                 # 클라이언트에서 호출할 경로
+  to = "/.netlify/functions/:splat" # 해당 Netlify Function으로 요청 전달
+  status = 200                    # 프록시처럼 동작 (301 리다이렉트가 아님)
+  # force = true # 간혹 필요한 경우 (기본적으로는 불필요)
