@@ -1,0 +1,15 @@
+# 파일 경로: your-project-root-folder-name/netlify.toml
+
+[build]
+  command = "npm install"
+  publish = "dist"
+  functions = "functions"
+
+[dev] # 로컬 개발용 (있어도 배포에 문제 없음)
+  publish = "dist"
+  port = 8888
+
+[[redirects]] # 이 섹션이 중요!
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
